@@ -1,38 +1,33 @@
 const axios = require('axios');
-
 module.exports.config = {
-  name: "ai2",
-  version: "69",
+  name: 'ai',
+  version: '1.0.0',
   role: 0,
-  credits: "OtinXSandip", // converted by kira
-  description: "ask AI",
-  usages: "ask <question>",
   hasPrefix: false,
-  commandCategory: "ai",
-  cooldowns: 0
+  aliases: ['gpt', 'openai'],
+  description: "An AI command powered by GPT-4",
+  usage: "Ai [promot]",
+  credits: '𝗮𝗲𝘀𝘁𝗵𝗲𝗿',
+  cooldown: 3,
 };
-  
-module.exports.run = async function ({ api, event, args, message }) {
+module.exports.run = async function({
+  api,
+  event,
+  args
+}) {
+  const input = args.join(' ');
+  if (!input) {
+    api.sendMessage(`Oui je suis là pour répondre à tes questions...👨🏻‍💻`, event.threadID, event.messageID);
+    return;
+  }
+  api.sendMessage(``, event.threadID, event.messageID);
   try {
-    const prompt = event.body.trim();
-    if (!prompt) {
-      await api.sendMessage({ body: "salut qu'es ce que je peux faire pour toi 👨🏻‍💻" }, event.threadID);
-      return;
-    }
-    api.setMessageReaction("🔎", event.messageID, (err) => {}, true);
-    const response = await axios.get(`https://sandipapi.onrender.com/gpt?prompt=${encodeURIComponent(prompt)}`);
-    api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-    const answer = response.data.answer;
-
-    await api.sendMessage({
-      body: `𝗕𝗢𝗧 𝗥𝗘𝗦𝗣𝗢𝗡𝗦𝗘 | 🟢
-━━━━━━━━━━━━━━━━━━        
-${answer}
-━━━━━━━━━━━━━━━━━━\n\n- 𝚃𝚑𝚒𝚜 𝚋𝚘𝚝 𝚞𝚗𝚍𝚎𝚛 𝙳𝚎𝚟𝚎𝚕𝚘𝚙𝚎𝚍 𝚋𝚢 𝚁𝚘𝚗𝚊𝚕𝚍-it\n• 𝗙𝗕𝗟𝗶𝗡𝗞: https://www.facebook.com/sory.ronald.alexandre`,
-    }, event.threadID);
-
+    const {
+      data
+    } = await axios.get(`https://hashier-api-globalgpt.vercel.app/api/globalgpt?q=${encodeURIComponent(input)}`);
+    const response = data.response;
+    api.sendMessage('════════════════\n['+ response +'] \n════════════════ \n https://www.facebook.com/sory.ronald.alexandre', event.threadID, event.messageID);
   } catch (error) {
-    console.error("🔴 An error occurred while processing your request.\nPlease contact churchill abing for an error", error.message);
-    api.setMessageReaction("🔴", event.messageID, (err) => {}, true);
+    api.sendMessage('An error occurred while processing your request.', event.threadID, event.messageID);
   }
 };
