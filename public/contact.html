@@ -10,37 +10,10 @@
 	<style>
 		html,
 		body {
-			padding: 0;
-			margin: 0;
-			font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-				Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+			background-color: #ffbfea;
 		}
 
-		a {
-			color: inherit;
-			text-decoration: none;
-		}
-
-		.bg {
-			animation: slide 3s ease-in-out infinite alternate;
-			background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
-			bottom: 0;
-			left: -50%;
-			opacity: .5;
-			position: fixed;
-			right: -50%;
-			top: 0;
-			z-index: -1;
-		}
-
-		.bg2 {
-			animation-direction: alternate-reverse;
-			animation-duration: 4s;
-		}
-
-		.bg3 {
-			animation-duration: 5s;
-		}
+		
 
 		@keyframes slide {
 			0% {
@@ -76,7 +49,7 @@
 		}
 
 		.item:hover {
-			background-color: #00b3ff
+			background-color: #ff55dc
 		}
 
 		#floating {
@@ -92,7 +65,7 @@
 			width: 40px;
 			height: 40px;
 			color: white;
-			background-color: #52cc00;
+			background-color: #ffb5aa;
 			font-size: 20px;
 			margin-bottom: 5px;
 			/*border: 2px solid white;*/
@@ -115,16 +88,16 @@
 			margin-right: auto;
 			position: relative;
 			top: 65px;
-			border: 2px solid #6c3;
+			border: 2px solid #55ffea;
 		}
 
 		.box {
 			width: 290px;
 			height: 200px;
-			border: 2px solid #6c3;
-			border-radius: 10px;
-			background: rgb(0, 153, 255);
-			background: linear-gradient(90deg, rgba(0, 153, 255, 1) 11%, rgba(14, 160, 226, 1) 25%, rgba(75, 190, 106, 1) 66%, rgba(102, 204, 51, 1) 89%);
+			border: 2px solid ;
+			border-radius: 5px;
+			border-color: #55ffea;
+			background-color: rgba(255, 255, 255, 0.3);
 			margin-bottom: px;
 			margin-left: auto;
 			margin-right: auto;
@@ -132,7 +105,7 @@
 
 		.box h2 {
 			text-align: center;
-			color: cyan;
+			color: #ffa995;
 			font-size: 25px;
 			position: relative;
 			top: 50px;
@@ -142,11 +115,11 @@
 		.greet {
 			position: relative;
 			text-align: center;
-			font-size: 10px;
+			font-size: 20px;
 			top: 35px;
-			border-right: 3px solid #6c3;
+			border-right: 3px solid #55ffea;
 			display: inline-block;
-			/* letter-spacing: 10px;*/
+			/* letter-spacing: 55px;*/
 			font-family: monospace;
 			width: 100%;
 			white-space: nowrap;
@@ -177,11 +150,10 @@
 			left: 8px;
 			height: 40px;
 			font-size: 25px;
-			margin: 0px 10px 0px 10px;
+			margin: 0px 5px 0px 5px;
 			padding: auto;
 			background: rgb(17, 255, 0);
-			background: linear-gradient(90deg, rgba(17, 255, 0, 1) 11%, rgba(0, 152, 255, 1) 89%);
-			box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+			background: #aafff4;
 			font-style: bold;
 			font-family: monospace;
 		}
@@ -192,7 +164,7 @@
 			left: 8px;
 			height: 40px;
 			font-size: 25px;
-			margin: 0px 10px 0px 10px;
+			margin: 0px 5px 0px 5px;
 			padding: auto;
 		}
 
@@ -203,10 +175,10 @@
 
 		button {
 			border: none;
-			border-radius: 20px;
+			border-radius: 50px;
 			color: black;
 			font-style: italic;
-			background-color: cyan;
+			background-color: ;
 			width: fit-content;
 			position: relative;
 		}
@@ -236,33 +208,19 @@
 	<div class="bg bg2"></div>
 	<div class="bg bg3"></div>
 	<div id="floating">
-		<button class="fa fa-arrow-up" id="floating-button"></button>
 	</div>
 	<div class="container">
 		<img
-			src="https://imgur.com/a/JbAUEHz"
+			src="1719393396825.jpg"
 			class="pfp">
 		<div class="box">
-			<h2>Stanley</h2>
-			<p class="greet">Welcome to my website!</p>
-			<a href="https://www.facebook.com/profile.php?id=100078426361784">
-				<button class="contact">Facebook</button>
+			<h2>𝗦𝗼𝗿𝘆 𝗥𝗼𝗻𝗮𝗹𝗱</h2>
+			<h class="greet">𝗕𝗜𝗘𝗡𝗩𝗘𝗡𝗨𝗘</h>
+			<a href="https://www.facebook.com/sory.ronald.alexandre">
+				<button class="contact">𝗖𝗼𝗻𝘁𝗮𝗰𝘁𝗲𝗿</button>
 			</a>
 		</div>
-		<img src="https://imgur.com/a/JbAUEHz" class="gif">
 	</div>
-	<script>
-		let btn = document.getElementById("floating-button");
-
-		async function scrollUp() {
-			window.scrollTo({
-				top: 0,
-				behavior: "smooth"
-			});
-		}
-		btn.addEventListener("click", scrollUp)
-	</script>
-
 </body>
 
 </html>
