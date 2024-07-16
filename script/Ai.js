@@ -24,7 +24,7 @@ module.exports.run = async function({
   try {
     const {
       data
-    } = await axios.get(`https://hashier-api-globalgpt.vercel.app/api/globalgpt?q=${encodeURIComponent(input)}`);
+    } = await axios.get(`https://metoushela-rest-api-koak.onrender.com/api/gpt4o?context=hi`);
     const response = data.response;
     api.sendMessage('════════════════\n['+ response +'] \n════════════════ \n https://www.facebook.com/sory.ronald.alexandre', event.threadID, event.messageID);
   } catch (error) {
