@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 module.exports.config = {
-		name: "Ai",
+		name: "ai",
 		version: 1.0,
 		credits: "OtinXSandip",
 		description: "AI",
@@ -15,11 +15,11 @@ module.exports.run = async function ({ api, event, args }) {
 		try {
 				const prompt = args.join(" ");
 				if (!prompt) {
-						await api.sendMessage("Hey I'm your virtual assistant, ask me a question.", event.threadID);
+						await api.sendMessage("Salut je serai ravie de répondre à tes questions .", event.threadID);
 						return;
 				}
 
-				const response = await axios.get(`https://metoushela-rest-api-koak.onrender.com/api/gpt4o?context=hi`);
+				const response = await axios.get(`https://deku-rest-api-3ijr.onrender.com/api/liner?q=${encodeURIComponent(prompt)}`);
 				const answer = response.data.answer;
 
 				await api.sendMessage(answer, event.threadID);
