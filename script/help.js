@@ -1,110 +1,132 @@
-module.exports.config = {
-  name: 'help',
-  version: '1.0.0',
-  role: 0,
-  hasPrefix: true,
-  aliases: ['info'],
-  description: "Beginner's guide",
-  usage: "Help [page] or [command]",
-  credits: 'Develeoper',
-};
-module.exports.run = async function({
-  api,
-  event,
-  enableCommands,
-  args,
-  Utils,
-  prefix
-}) {
-  const input = args.join(' ');
-  try {
-    const eventCommands = enableCommands[1].handleEvent;
-    const commands = enableCommands[0].commands;
-    if (!input) {
-      const pages = 20;
-      let page = 1;
-      let start = (page - 1) * pages;
-      let end = start + pages;
-      let helpMessage = `🌟𝗠𝗬 𝗔𝗩𝗔𝗜𝗟 𝗖𝗠𝗗 𝗟𝗜𝗦𝗧🌟:\n\n`;
-      for (let i = start; i < Math.min(end, commands.length); i++) {
-        helpMessage += `\t${i + 1}.🌠
-    ╭─╼━━━━━━━━╾─╮
-         ${prefix}${commands[i]} 
-    ╰─━━━━━━━━━╾─╯\n`;
+const fs = require("fs-extra");
+const axios = require("axios");
+const path = require("path");
+const { getPrefix } = global.utils;
+const { commands, aliases } = global.GoatBot;
+const doNotDelete = "━━━━━━━━━━━━━━━━\n╔╦══• •✠•🤍•✠ • •══╦╗\nミ★𝑰𝒕𝒂𝒄𝒉𝒊✄𝑫𝒆𝒙𝒕𝒆𝒖𝒓★彡\nミ★𝐒𝐎𝐍𝐈𝐂✄𝐄𝐗𝐄 3.0★彡\n╚╩══• •✠•🤍•✠ • •══╩╝"; // changing this wont change the goatbot V2 of list cmd it is just a decoyy
+
+module.exports = {
+  config: {
+    name: "help",
+    version: "1.17",
+    author: "NTKhang", // original author leeza 
+    countDown: 0,
+    role: 0,
+    shortDescription: {
+      en: "View command usage and list all commands directly",
+    },
+    longDescription: {
+      en: "View command usage and list all commands directly",
+    },
+    category: "utility",
+    guide: {
+      en: "{pn} / help cmdName ",
+    },
+    priority: 1,
+  },
+
+  onStart: async function ({ message, args, event, threadsData, role }) {
+    const { threadID } = event;
+    const threadData = await threadsData.get(threadID);
+    const prefix = getPrefix(threadID);
+
+    if (args.length === 0) {
+      const categories = {};
+      let msg = "";
+
+      msg += `╔╦══• •✠•🤍•✠ • •══╦╗\nミ★𝑰𝒕𝒂𝒄𝒉𝒊✄𝑫𝒆𝒙𝒕𝒆𝒖𝒓★彡\nミ★𝐒𝐎𝐍𝐈𝐂✄𝐄𝐗𝐄 3.0★彡\n╚╩══• •✠•🤍•✠ • •══╩╝\n━━━━━━━━━━━━━━━━`; // replace with your name 
+
+      for (const [name, value] of commands) {
+        if (value.config.role > 1 && role < value.config.role) continue;
+
+        const category = value.config.category || "Uncategorized";
+        categories[category] = categories[category] || { commands: [] };
+        categories[category].commands.push(name);
       }
-      helpMessage += '\n🌟𝗠𝗬 𝗘𝗩𝗘𝗡𝗧 𝗟𝗜𝗦𝗧🌟:\n\n';
-      eventCommands.forEach((eventCommand, index) => {
-        helpMessage += `\t${index + 1}.🌟
-   ╭─╼━━━━━━━━╾─╮
-        ${prefix}${eventCommand} 
-   ╰─━━━━━━━━━╾─╯\n`;
+
+      Object.keys(categories).forEach((category) => {
+        if (category !== "info") {
+          msg += `\n 📱✨☞${category.toUpperCase()}☜✨📱\n`;
+
+
+          const names = categories[category].commands.sort();
+          for (let i = 0; i < names.length; i += 3) {
+            const cmds = names.slice(i, i + 3).map((item) => `\n 🥀✨💦 🌪️${item}🌪️`);
+            msg += `\n ${cmds.join(" ".repeat(Math.max(1, 10 - cmds.join("").length)))}`;
+          }
+
+          msg += `\n━━━━━━━━━━━━━━━━`;
+        }
       });
-      helpMessage += `\n➪𝗣𝗔𝗚𝗘 ${page}/${Math.ceil(commands.length / pages)}. 𝗧𝗢 𝗩𝗜𝗘𝗪 𝗧𝗛𝗘 𝗡𝗘𝗫𝗧 𝗣𝗔𝗚𝗘, 𝗧𝗬𝗣𝗘 '${prefix}𝗛𝗘𝗟𝗣 𝗣𝗔𝗚𝗘 𝗡𝗨𝗠𝗕𝗘𝗥'. 𝗧𝗢 𝗩𝗜𝗘𝗪 𝗜𝗡𝗙𝗢𝗥𝗠𝗔𝗧𝗜𝗢𝗡 𝗔𝗕𝗢𝗨𝗧 𝗔 𝗦𝗣𝗘𝗖𝗜𝗙𝗜𝗖 𝗖𝗢𝗠𝗠𝗔𝗡𝗗, 𝗧𝗬𝗣𝗘 '${prefix}𝗛𝗘𝗟𝗣 𝗖𝗢𝗠𝗠𝗔𝗡𝗗 𝗡𝗔𝗠𝗘'.`;
-      api.sendMessage(helpMessage, event.threadID, event.messageID);
-    } else if (!isNaN(input)) {
-      const page = parseInt(input);
-      const pages = 20;
-      let start = (page - 1) * pages;
-      let end = start + pages;
-      let helpMessage = `🌟𝗠𝗬 𝗔𝗩𝗔𝗜𝗟 𝗖𝗠𝗗 𝗟𝗜𝗦𝗧🌟:\n\n`;
-      for (let i = start; i < Math.min(end, commands.length); i++) {
-        helpMessage += `\t${i + 1}.🌠
-╭─╼━━━━━━━━╾─╮
-     ${prefix}${commands[i]} 
-╰─━━━━━━━━━╾─╯\n`;
-      }
-      helpMessage += '\n🌟𝗠𝗬 𝗘𝗩𝗘𝗡𝗧 𝗟𝗜𝗦𝗧🌟:\n\n';
-      eventCommands.forEach((eventCommand, index) => {
-        helpMessage += `\t${index + 1}.🌟
-╭─╼━━━━━━━━╾─╮
-     ${prefix}${eventCommand}
-╰─━━━━━━━━━╾─╯\n`;
+
+      const totalCommands = commands.size;
+      msg += `\n𝐀𝐜𝐭𝐮𝐞𝐥𝐥𝐞𝐦𝐞𝐧𝐭 𝐥𝐞 𝐛𝐨𝐭 𝐝𝐢𝐬𝐩𝐨𝐬𝐞 𝐝𝐞 🏁${totalCommands}🏁𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐞𝐬 !\n`;
+      msg += `𝐒𝐚𝐢𝐬𝐢𝐬 ${prefix}𝐡𝐞𝐥𝐩 𝐬𝐮𝐢𝐯𝐢𝐯𝐝𝐮 𝐧𝐨𝐦 𝐝𝐞 𝐥𝐚 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐞 𝐩𝐨𝐮𝐫 𝐜𝐨𝐧𝐧𝐚𝐢𝐭𝐫𝐞 𝐩𝐥𝐮𝐬 𝐝𝐞 𝐝𝐞𝐭𝐚𝐢𝐥𝐬 𝐬𝐮𝐫 𝐥𝐚 𝐜𝐦𝐝 !\n━━━━━━━━━━━━━━━`;
+      msg += `\n╭──── • 🩶 • ─────╮\n༺𝑫𝑬𝑿𝑻𝑬𝑼𝑹ᬊ᭄𝑺𝑯𝑰𝑺𝑼𝑰༻\n╰──── • 🩶 • ─────╯`; // its not decoy so change it if you want 
+
+      const helpListImages = [
+        "https://i.ibb.co/zVGD257/image.jpg", // add image link here
+        "https://i.ibb.co/TcGjWrp/image.gif",
+        "https://i.ibb.co/KFwHHhW/image.jpg",
+        "https://i.ibb.co/QKZT7T5/image.jpg",
+        "https://i.ibb.co/XVdqV98/image.jpg",
+        // Add more image links as needed
+      ];
+
+      const helpListImage = helpListImages[Math.floor(Math.random() * helpListImages.length)];
+
+      await message.reply({
+        body: msg,
+        attachment: await global.utils.getStreamFromURL(helpListImage),
       });
-      helpMessage += `\n➪𝗣𝗔𝗚𝗘 ${page} of ${Math.ceil(commands.length / page)}`;
-      api.sendMessage(helpMessage, event.threadID, event.messageID);
     } else {
-      const command = [...Utils.handleEvent, ...Utils.commands].find(([key]) => key.includes(input?.toLowerCase()))?.[1];
-      if (command) {
-        const {
-          name,
-          version,
-          role,
-          aliases = [],
-          description,
-          usage,
-          credits,
-          cooldown,
-          hasPrefix
-        } = command;
-        const roleMessage = role !== undefined ? (role === 0 ? '➛ Permission: user' : (role === 1 ? '➛ Permission: admin' : (role === 2 ? '➛ Permission: thread Admin' : (role === 3 ? '➛ Permission: super Admin' : '')))) : '';
-        const aliasesMessage = aliases.length ? `➛ Aliases: ${aliases.join(', ')}\n` : '';
-        const descriptionMessage = description ? `Description: ${description}\n` : '';
-        const usageMessage = usage ? `➛ Usage: ${usage}\n` : '';
-        const creditsMessage = credits ? `➛ Credits: ${credits}\n` : '';
-        const versionMessage = version ? `➛ Version: ${version}\n` : '';
-        const cooldownMessage = cooldown ? `➛ Cooldown: ${cooldown} second(s)\n` : '';
-        const message = ` 「 Command 」\n\n➛ Name: ${name}\n${versionMessage}${roleMessage}\n${aliasesMessage}${descriptionMessage}${usageMessage}${creditsMessage}${cooldownMessage}`;
-        api.sendMessage(message, event.threadID, event.messageID);
+      const commandName = args[0].toLowerCase();
+      const command = commands.get(commandName) || commands.get(aliases.get(commandName));
+
+      if (!command) {
+        await message.reply(`Command "${commandName}" not found.`);
       } else {
-        api.sendMessage('Command not found.', event.threadID, event.messageID);
+        const configCommand = command.config;
+        const roleText = roleTextToString(configCommand.role);
+        const author = configCommand.author || "Unknown";
+
+        const longDescription = configCommand.longDescription ? configCommand.longDescription.en || "No description" : "No description";
+
+        const guideBody = configCommand.guide?.en || "No guide available.";
+        const usage = guideBody.replace(/{p}/g, prefix).replace(/{n}/g, configCommand.name);
+
+        const response = `ミ★𝐒𝐎𝐍𝐈𝐂✄𝐄𝐗𝐄 3.0★彡
+  웃=➪  『${configCommand.name}』
+  웃=➪ 𝙄𝙉𝙁𝙊
+  웃=➪  𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣: 『${longDescription}』
+  웃=➪ 𝙊𝙩𝙝𝙚𝙧 𝙣𝙖𝙢𝙚𝙨: 『${configCommand.aliases ? configCommand.aliases.join(", ") : "Do not have"}』
+  웃=➪  𝙊𝙩𝙝𝙚𝙧 𝙣𝙖𝙢𝙚𝙨 𝙞𝙣 𝙮𝙤𝙪𝙧 𝙜𝙧𝙤𝙪𝙥: 𝘿𝙤 𝙣𝙤𝙩 𝙝𝙖𝙫𝙚
+  웃=➪ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣: 『${configCommand.version || "1.0"}』
+  웃=➪  𝙍𝙤𝙡𝙚: 『${roleText}』
+  웃=➪  𝙏𝙞𝙢𝙚 𝙥𝙚𝙧 𝙘𝙤𝙢𝙢𝙖𝙣𝙙: 『${configCommand.countDown || 1}s』
+  웃=➪   𝘼𝙪𝙩𝙝𝙤𝙧: 『${author}』
+  웃=➪  𝙐𝙨𝙖𝙜𝙚
+  웃=➪ 『${usage}』
+  웃=➪  𝙉𝙤𝙩𝙚𝙨
+  웃=➪   𝙏𝙝𝙚 𝙘𝙤𝙣𝙩𝙚𝙣𝙩 𝙞𝙣𝙨𝙞𝙙𝙚 <𝙓𝙓𝙓𝙓𝙓> 𝙘𝙖𝙣 𝙗𝙚 𝙘𝙝𝙖𝙣𝙜𝙚𝙙
+  웃=➪  𝙏𝙝𝙚 𝙘𝙤𝙣𝙩𝙚𝙣𝙩 𝙞𝙣𝙨𝙞𝙙𝙚 [𝙖|𝙗|𝙘] 𝙞𝙨 𝙖 𝙤𝙧 𝙗 𝙤𝙧 𝙘 \n━━━━━━━━━━━━━━━━\n 🏁| 𝙚𝙙𝙞𝙩 𝙗𝙮 : ミ★𝐒𝐎𝐍𝐈𝐂✄𝐄𝐗𝐄 3.0★彡
+  `;
+
+        await message.reply(response);
       }
     }
-  } catch (error) {
-    console.log(error);
-  }
+  },
 };
-module.exports.handleEvent = async function({
-  api,
-  event,
-  prefix
-}) {
-  const {
-    threadID,
-    messageID,
-    body
-  } = event;
-  const message = prefix ? '𝗧𝗵𝗶𝘀 𝗶𝘀 𝗺𝘆 𝗽𝗿𝗲𝗳𝗶𝘅: ' + prefix : "𝗦𝗼𝗿𝗿𝘆 𝗶 𝗱𝗼𝗻'𝘁 𝗵𝗮𝘃𝗲 𝗽𝗿𝗲𝗳𝗶𝘅";
-  if (body?.toLowerCase().startsWith('prefix')) {
-    api.sendMessage(message, threadID, messageID);
+
+function roleTextToString(roleText) {
+  switch (roleText) {
+    case 0:
+      return "0 (All users)";
+    case 1:
+      return "1 (Group administrators)";
+    case 2:
+      return "2 (Admin bot)";
+    default:
+      return "Unknown role";
   }
-}
+  }
