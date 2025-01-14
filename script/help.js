@@ -3,13 +3,13 @@ const axios = require("axios");
 const path = require("path");
 const { getPrefix } = global.utils;
 const { commands, aliases } = global.GoatBot;
-const doNotDelete = "━━━━━━━━━━━━━━━━\n╔╦══• •✠•🤍•✠ • •══╦╗\nミ★𝑰𝒕𝒂𝒄𝒉𝒊✄𝑫𝒆𝒙𝒕𝒆𝒖𝒓★彡\nミ★𝐒𝐎𝐍𝐈𝐂✄𝐄𝐗𝐄 3.0★彡\n╚╩══• •✠•🤍•✠ • •══╩╝"; // changing this wont change the goatbot V2 of list cmd it is just a decoyy
+const doNotDelete = "━━━━━━━━━━━━━━━━\n╔╦══• •✠•🤍•✠ • •══╦╗\nミ★𝘓𝘖𝘙𝘋✄𝘒𝘐𝘕𝘎★彡\nミ★𝘑𝘈𝘠𝘋𝘌𝘕✄𝘚𝘔𝘐𝘛𝘏★彡\n╚╩══• •✠•🤍•✠ • •══╩╝"; // changing this wont change the goatbot V2 of list cmd it is just a decoyy
 
 module.exports = {
   config: {
     name: "help",
     version: "1.17",
-    author: "NTKhang", // original author leeza 
+    author: "𝘓𝘰𝘳𝘥  𝘬𝘪𝘯𝘨", // original author leeza 
     countDown: 0,
     role: 0,
     shortDescription: {
@@ -34,7 +34,7 @@ module.exports = {
       const categories = {};
       let msg = "";
 
-      msg += `╔╦══• •✠•🤍•✠ • •══╦╗\nミ★𝑰𝒕𝒂𝒄𝒉𝒊✄𝑫𝒆𝒙𝒕𝒆𝒖𝒓★彡\nミ★𝐒𝐎𝐍𝐈𝐂✄𝐄𝐗𝐄 3.0★彡\n╚╩══• •✠•🤍•✠ • •══╩╝\n━━━━━━━━━━━━━━━━`; // replace with your name 
+      msg += `╔╦══• •✠•🤍•✠ • •══╦╗\nミ★𝘒𝘐𝘕𝘎✄𝘓𝘖𝘙𝘋★彡\nミ★𝘑𝘈𝘠𝘋𝘌𝘕✄𝘚𝘔𝘐𝘛𝘏★彡\n╚╩══• •✠•🤍•✠ • •══╩╝\n━━━━━━━━━━━━━━━━`; // replace with your name 
 
       for (const [name, value] of commands) {
         if (value.config.role > 1 && role < value.config.role) continue;
@@ -62,7 +62,7 @@ module.exports = {
       const totalCommands = commands.size;
       msg += `\n𝐀𝐜𝐭𝐮𝐞𝐥𝐥𝐞𝐦𝐞𝐧𝐭 𝐥𝐞 𝐛𝐨𝐭 𝐝𝐢𝐬𝐩𝐨𝐬𝐞 𝐝𝐞 🏁${totalCommands}🏁𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐞𝐬 !\n`;
       msg += `𝐒𝐚𝐢𝐬𝐢𝐬 ${prefix}𝐡𝐞𝐥𝐩 𝐬𝐮𝐢𝐯𝐢𝐯𝐝𝐮 𝐧𝐨𝐦 𝐝𝐞 𝐥𝐚 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐞 𝐩𝐨𝐮𝐫 𝐜𝐨𝐧𝐧𝐚𝐢𝐭𝐫𝐞 𝐩𝐥𝐮𝐬 𝐝𝐞 𝐝𝐞𝐭𝐚𝐢𝐥𝐬 𝐬𝐮𝐫 𝐥𝐚 𝐜𝐦𝐝 !\n━━━━━━━━━━━━━━━`;
-      msg += `\n╭──── • 🩶 • ─────╮\n༺𝑫𝑬𝑿𝑻𝑬𝑼𝑹ᬊ᭄𝑺𝑯𝑰𝑺𝑼𝑰༻\n╰──── • 🩶 • ─────╯`; // its not decoy so change it if you want 
+      msg += `\n╭──── • 🩶 • ─────╮\n༺𝘛𝘌𝘈𝘔ᬊ᭄𝑺𝑯𝑰𝑺𝑼𝑰༻\n╰──── • 🩶 • ─────╯`; // its not decoy so change it if you want 
 
       const helpListImages = [
         "https://i.ibb.co/zVGD257/image.jpg", // add image link here
@@ -95,7 +95,7 @@ module.exports = {
         const guideBody = configCommand.guide?.en || "No guide available.";
         const usage = guideBody.replace(/{p}/g, prefix).replace(/{n}/g, configCommand.name);
 
-        const response = `ミ★𝐒𝐎𝐍𝐈𝐂✄𝐄𝐗𝐄 3.0★彡
+        const response = `𝘑𝘈𝘠𝘋𝘌𝘕 𝘚𝘔𝘐𝘛𝘏
   웃=➪  『${configCommand.name}』
   웃=➪ 𝙄𝙉𝙁𝙊
   웃=➪  𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣: 『${longDescription}』
@@ -109,7 +109,7 @@ module.exports = {
   웃=➪ 『${usage}』
   웃=➪  𝙉𝙤𝙩𝙚𝙨
   웃=➪   𝙏𝙝𝙚 𝙘𝙤𝙣𝙩𝙚𝙣𝙩 𝙞𝙣𝙨𝙞𝙙𝙚 <𝙓𝙓𝙓𝙓𝙓> 𝙘𝙖𝙣 𝙗𝙚 𝙘𝙝𝙖𝙣𝙜𝙚𝙙
-  웃=➪  𝙏𝙝𝙚 𝙘𝙤𝙣𝙩𝙚𝙣𝙩 𝙞𝙣𝙨𝙞𝙙𝙚 [𝙖|𝙗|𝙘] 𝙞𝙨 𝙖 𝙤𝙧 𝙗 𝙤𝙧 𝙘 \n━━━━━━━━━━━━━━━━\n 🏁| 𝙚𝙙𝙞𝙩 𝙗𝙮 : ミ★𝐒𝐎𝐍𝐈𝐂✄𝐄𝐗𝐄 3.0★彡
+  웃=➪  𝙏𝙝𝙚 𝙘𝙤𝙣𝙩𝙚𝙣𝙩 𝙞𝙣𝙨𝙞𝙙𝙚 [𝙖|𝙗|𝙘] 𝙞𝙨 𝙖 𝙤𝙧 𝙗 𝙤𝙧 𝙘 \n━━━━━━━━━━━━━━━━\n
   `;
 
         await message.reply(response);
